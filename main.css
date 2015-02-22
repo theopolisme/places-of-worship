@@ -1,0 +1,182 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+html, body, #map {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+a {
+    color: #0078A8;
+    text-decoration: none;
+    transition: 0.4s text-decoration ease-in-out;
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+#intro {
+    position: absolute; 
+    bottom: 0;
+    z-index: 9998;
+    background-color: rgba(255,255,255,0.7);
+    width: 80%;
+    padding: 20px 10% 25px;
+    font-size: 1.5rem;
+    transition: 1s bottom ease-in-out, 0.8s opacity ease-in-out;
+}
+
+@media screen and (max-width: 680px) {
+    #intro {
+        padding-bottom: 40px;
+    }
+}
+
+#intro h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+#intro p {
+    margin: 0;
+    padding: 10px 0;
+}
+
+#intro span {
+    color: gray;
+    font-size: 1rem;
+}
+
+#autocomplete {
+    border: none;
+    outline: none;
+    font-size: 1.8rem;
+    background: none;
+    width: 100%;
+}
+
+#intro button {
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    background-color: #92DEFF;
+    border: 0;
+    font-size: inherit;
+    border-radius: 5px;
+    outline: none;
+    transition: 0.2s background-color ease-in-out;
+    cursor: pointer;
+}
+
+#intro button:hover {
+    background-color: #6CD3FF;
+}
+
+#intro button:active {
+    background-color: #27BEFF;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    z-index: 9999;
+    width: 100%;
+    text-align: center;
+    background: none;
+    padding: 4px 0;
+    font-size: 0.7rem;
+}
+
+body.rendered .footer {
+    background-color: rgba(255,255,255,0.7);
+}
+
+span.google-powered {
+    display: inline-block;
+    width: 104px;
+    height: 16px;
+    background-image: url('ext/powered-by-google.png');
+    background-size: 104px 16px;
+    margin-bottom: -4px;
+}
+
+.leaflet-control-attribution {
+    display: none;
+}
+
+.leaflet-container {
+    transition: 1s background-color ease-in-out;
+}
+
+.leaflet-tile-pane {
+    transition: 1s opacity ease-in-out;
+}
+
+body.rendered .leaflet-container {
+    background-color: black;
+}
+
+body.rendered .leaflet-tile-pane {
+    opacity: 0.6;
+}
+
+/* for the layer control, override browser default */
+form {
+    margin-bottom: 0;
+}
+
+.leaflet-control-layers-overlays {
+    padding: 0;
+    overflow: hidden;
+}
+
+.leaflet-control-layers.leaflet-control-layers-expanded.leaflet-control {
+    padding: 0;
+    overflow: hidden;
+}
+
+input.leaflet-control-layers-selector {
+    display: none;
+}
+
+span.group {
+    width: 100%;
+    display: inline-block;
+    padding: 5px 15px;
+    overflow: hidden;
+    opacity: 0.4;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+input.leaflet-control-layers-selector:checked ~ span > span {
+    opacity: 1;
+}
+
+.leaflet-popup-content .name {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.leaflet-pane.leaflet-overlay-pane {
+    opacity: 0.75;
+}
+
+.pac-container {
+    z-index: 999999;
+    margin-top: 2px;
+}
+
+#attributions:not(:empty):before {
+    content: "| ";
+}

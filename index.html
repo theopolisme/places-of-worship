@@ -1,0 +1,24 @@
+<head>
+    <title>Places of Worship</title>
+    <link rel="stylesheet" href="ext/leaflet.css"/>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div id="intro">
+        <h1>Places of Worship</h1>
+        <!-- <p>Move the marker to a desired region by clicking and dragging (scroll to zoom), then hit "Go" to paint a map of religious institutions onto the screen. <span>Current location: <span id="currentPosition"></span></p>-->
+        <p>
+            <input id="autocomplete" type="text" placeholder="Type to select a starting point (city, state, country, etc.), or drag the marker">
+        </p>
+        <button id="go">Go!</button>
+    </div>
+    <div class="footer">
+        Places of Worship by <a href="https://theopatt.com">@theopolisme</a> | Rendered with <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors | Place data <span class="google-powered"></span> <span id="attributions"></span></a>
+    </div>
+    <div id="map"></div>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDKGmcQ7madWZ0B3kM7h_3V27TLeOtayQA"></script>
+    <script>L_PREFER_CANVAS = true;</script>
+    <script src="ext/leaflet.js"></script>
+    <script src="main.js"></script>
+</body>
