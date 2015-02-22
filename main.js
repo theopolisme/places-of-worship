@@ -11,6 +11,7 @@
         DEFAULT_POPUP_CONTENT = '<span class="popup-loading">Loading details...</span>',
         DEFAULT_MARKER_POSITION = [35.1174, -89.9711], // Home sweet home...
         DEFAULT_RADIUS = 20000,
+        DEFAULT_PURGE_RADIUS = 100000,
         UNKNOWN_COLOR = 'rgb(189,189,189)',
         COLORS = ['rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)',
         'rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)','rgb(255,255,153)','rgb(177,89,40)','rgb(141,211,199)','rgb(255,255,179)',
@@ -163,6 +164,8 @@
                         lng = el.lon;
                     }
 
+                    //if ( el.tags.denomination && el.tags.denomination.length > 1 ) {
+                    //    religion = el.tags.denomination.toLowerCase();
                     if ( el.tags.religion && el.tags.religion.length > 1 ) {
                         religion = el.tags.religion.toLowerCase();
                     } else {
@@ -263,7 +266,17 @@
                 collapsed: false
             } ).addTo( map );
 
-            $( '.group' )
+        } else {
+            $.each( groups, function ( name, g ) {
+                if ( !control._layers[ L.stamp( g.group ) ] ) {
+                    control.addOverlay( g.group, makeHtml( name, g ) );
+                }
+            } );
+        }
+
+        $( '.group' )
+                .not( '.hover-enabled' )
+                .addClass( 'hover-enabled' )
                 .hover( function () {
                     $( this ).parent().parent().siblings().find( 'input' ).each( function () {
                         var $this = $( this );
@@ -278,17 +291,16 @@
                     } );
                     control._onInputClick();
                 } );
-        } else {
-            $.each( groups, function ( name, g ) {
-                if ( !control._layers[ L.stamp( g.group ) ] ) {
-                    control.addOverlay( g.group, makeHtml( name, g ) );
-                }
-            } );
-        }
+
     }
 
     function purgeNonVisibleMarkers () {
-        var bounds = map.getBounds().pad( 0.5 );
+        var circle = L.circle( map.getCenter(), DEFAULT_PURGE_RADIUS, {
+                    opacity: 0
+                } ).addTo( map ),
+            bounds = circle.getBounds();
+
+        map.removeLayer( circle );
 
         map.eachLayer( function ( layer ) {
             if ( layer.eachLayer ) {
@@ -301,8 +313,5 @@
         } );
     }
     setInterval( purgeNonVisibleMarkers, 5000 );
-
-    // debugging
-    window.map = map;
 
 }( jQuery, L ) );
