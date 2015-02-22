@@ -97,15 +97,6 @@ body.rendered .footer {
     background-color: rgba(255,255,255,0.7);
 }
 
-span.google-powered {
-    display: inline-block;
-    width: 104px;
-    height: 16px;
-    background-image: url('ext/powered-by-google.png');
-    background-size: 104px 16px;
-    margin-bottom: -4px;
-}
-
 .leaflet-control-attribution {
     display: none;
 }
@@ -177,6 +168,29 @@ input.leaflet-control-layers-selector:checked ~ span > span {
     margin-top: 2px;
 }
 
-#attributions:not(:empty):before {
-    content: "| ";
+.photon-autocomplete {
+    margin-top: 0px;
+    padding: 1px;
 }
+
+.photon-input {
+    width: 141px;
+    font-size: 1rem;
+    padding: 5px;
+    border: 0;
+    outline: 0;
+}
+
+/*.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: #FF851B;
+}
+
+.leaflet-popup-content-wrapper {
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+body.rendered .leaflet-popup-content-wrapper, body.rendered .leaflet-popup-tip {
+    background: white;
+}*/
