@@ -164,7 +164,7 @@
                     }
 
                     if ( el.tags.religion && el.tags.religion.length > 1 ) {
-                        religion = el.tags.religion;
+                        religion = el.tags.religion.toLowerCase();
                     } else {
                         religion = 'unknown';
                     }
