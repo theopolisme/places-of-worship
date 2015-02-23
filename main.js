@@ -294,7 +294,7 @@
 
     }
 
-    function purgeNonVisibleMarkers () {
+    function purge() {
         var circle = L.circle( map.getCenter(), DEFAULT_PURGE_RADIUS, {
                     opacity: 0
                 } ).addTo( map ),
@@ -303,6 +303,7 @@
         map.removeLayer( circle );
 
         map.eachLayer( function ( layer ) {
+            // Remove markers that are far out of the viewport
             if ( layer.eachLayer ) {
                 layer.eachLayer( function ( marker ) {
                     if ( !bounds.contains( marker.getLatLng() ) ) {
@@ -310,8 +311,12 @@
                     }
                 } );
             }
+            // Remove controls for layers that no longer have any markers
+            if ( layer._layers && Object.keys( layer._layers ).length === 0 ) {
+                control.removeLayer( layer );
+            }
         } );
     }
-    setInterval( purgeNonVisibleMarkers, 5000 );
+    setInterval( purge, 5000 );
 
 }( jQuery, L ) );
