@@ -1,27 +1,32 @@
 <head>
     <title>Places of Worship</title>
     <link rel="stylesheet" href="ext/leaflet.css"/>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="main.css"/>
     <link rel="stylesheet" href="ext/leaflet.photon.css"/>
+    <link rel="stylesheet" href="ext/sweet-alert.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.0.5/css/tooltipster.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.1.6/nprogress.min.css" />
 </head>
 <body>
     <div id="intro">
         <h1>Places of Worship</h1>
         <p>Visualize the unique distribution of places of worship around the world by entering a location in the "Fly to" box in the upper righthand corner or dragging the marker on the map. <a id="go" href="#">Launch!</a></p>
         <p class="small">See missing or incorrect data? You can update it through <a target="_blank" href="https://www.openstreetmap.org">OpenStreetMap</a>.</p>
-        <!-- <p>Move the marker to a desired region by clicking and dragging (scroll to zoom), then hit "Go" to paint a map of religious institutions onto the screen. <span>Current location: <span id="currentPosition"></span></p>
-        <p>
-            <input id="autocomplete" type="text" placeholder="Type to select a starting point (city, state, country, etc.), or drag the marker">
-        </p>
-        <button id="go">Go!</button>-->
     </div>
     <div class="footer">
-        Places of Worship by <a target="_blank" href="https://theopatt.com">@theopolisme</a> | Rendered with <a target="_blank" href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © <a target="_blank" href="https://openstreetmap.org">OpenStreetMap</a> contributors &amp; served via the <a target="_blank" href="http://overpass-api.de/">Overpass API</a>
+        Places of Worship by <a target="_blank" href="https://theopatt.com">@theopolisme</a> | Rendered with <a target="_blank" href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © <a target="_blank" href="https://openstreetmap.org">OpenStreetMap</a> contributors &amp; served via the <a target="_blank" href="http://overpass-api.de/">Overpass API</a><span class="osm-login-detail"> | OSM logged in (<a id="osmLogout" href="#">logout</a>)</span>
     </div>
     <div id="map"></div>
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script>L_PREFER_CANVAS = true;</script>
+    <script>
+        VERSION = 0.1;
+        L_PREFER_CANVAS = true;
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.0.5/js/jquery.tooltipster.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.1.6/nprogress.min.js"></script>
     <script src="ext/leaflet.js"></script>
     <script src="ext/leaflet.photon.js"></script>
+    <script src="ext/sweet-alert.min.js"></script>
+    <script src="ext/osmauth.min.js"></script>
     <script src="main.js"></script>
 </body>

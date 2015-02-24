@@ -117,7 +117,7 @@ body.rendered .footer {
 }
 
 body.rendered .leaflet-container {
-    background-color: black;
+    background-color: rgba(0,0,0,0.8);
 }
 
 body.rendered .leaflet-tile-pane {
@@ -150,13 +150,17 @@ span.group {
     display: inline-block;
     padding: 5px 15px;
     overflow: hidden;
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
+}
+
+input.leaflet-control-layers-selector ~ span > span.temp-disabled {
+    opacity: 0.7;
 }
 
 input.leaflet-control-layers-selector:checked ~ span > span {
@@ -183,11 +187,45 @@ input.leaflet-control-layers-selector:checked ~ span > span {
 }
 
 .photon-input {
-    width: 141px;
+    width: 150px;
     font-size: 1rem;
     padding: 5px;
     border: 0;
     outline: 0;
+}
+
+.error-details {
+    font-size: 0.7em;
+    padding-top: 10px;
+}
+
+.no-data {
+    padding-top: 8px;
+}
+
+.no-data .options {
+    margin-top: 4px;
+}
+
+.no-data .options select {
+    margin-right: 5px;
+    max-width: 60%;
+}
+
+.no-data .options button {
+    max-width: 30%;
+}
+
+.sweet-alert .osm-detail {
+    text-align: left;
+}
+
+.sweet-alert .osm-detail p {
+    margin-top: 10px;
+}
+
+.footer .osm-login-detail {
+    display: none;
 }
 
 /*.leaflet-popup-content-wrapper, .leaflet-popup-tip {
