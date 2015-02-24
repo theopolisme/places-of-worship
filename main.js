@@ -26,7 +26,7 @@
         DEFAULT_RADIUS = 20000,
         DEFAULT_PURGE_RADIUS = 100000,
         UNKNOWN_COLOR = 'rgb(189,189,189)',
-        COLORS = ['rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)',
+        COLORS = ['rgb(31,120,180)','rgb(178,223,138)',/*'rgb(51,160,44)', too dark*/'rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)',
             'rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)','rgb(255,255,153)','rgb(177,89,40)','rgb(141,211,199)','rgb(255,255,179)',
             'rgb(190,186,218)','rgb(251,128,114)','rgb(128,177,211)','rgb(253,180,98)','rgb(179,222,105)','rgb(252,205,229)',
             'rgb(217,217,217)','rgb(188,128,189)','rgb(204,235,197)','rgb(255,237,111)'], // http://colorbrewer2.org/ <3
@@ -226,16 +226,26 @@
 
         $( '.photon-input' ).focus();
 
+        $( '.photon-input' ).on( 'keyup blur change', function () {
+            $( this ).toggleClass( 'has-content', !!$( this ).val().length );
+        } );
+
         if ( authenticatedOsm.authenticated() ) {
             showAndSetupOsmLoginDetail();
         }
 
-        marker.on( 'click dragend', go );
+        marker.on( 'click', go );
+        marker.once( 'drag', function () { 
+            $( '#go' ).css( 'font-weight', 'bold' );
+            $( '.photon-input' ).blur();
+        } );
+
         $( '#go' ).click( go );
 
         function go () {
             var latlng = marker.getLatLng();
 
+            $( document.body ).addClass( 'map-active' );
             render( latlng );
 
             $( '#intro' )
@@ -380,6 +390,8 @@
             deferred.resolve(
                 Object.keys( results ).map( function ( name ) {
                     return { name: name, places: results[name] };
+                } ).sort( function ( a, b ) {
+                    return b.places.length - a.places.length;
                 } )
             );
         } );
@@ -405,7 +417,7 @@
                     marker.once( 'click', function () {
                         var marker = this,
                             content = '<div class="name">' + place.name + '</div>' +
-                            '<div><div>' + prettifyReligionName( r.name ) + '</div><div><a target="_blank" href="' + OSM_LINK_FORMAT.replace( 'TYPE', place.type ).replace( 'ID', place.id ) + '">View on OpenStreetMap</a></div></div>';
+                            '<div><div>' + prettifyReligionName( r.name ) + '</div><div><a target="_blank" href="' + OSM_LINK_FORMAT.replace( 'TYPE', place.type ).replace( 'ID', place.id ) + '">View/edit on OpenStreetMap</a></div></div>';
 
                         if ( isUnknown ) {
                             selectorId = 'religionSelect' + religionSelectIndex++;
@@ -436,14 +448,17 @@
                                         sweetAlert( {
                                             title: 'First things first',
                                             html: true,
-                                            text: '<div class="osm-detail"><p>We use OpenStreetMap to store &amp; update religion information. ' +
-                                            'When you click "Okay", you\'ll be brought to a screen where you can log in ' +
-                                            'with your OpenStreetMap account, or create one if you don\'t have one already.</p>' +
-                                            '<p>Once you log in and grant "Places of Worship" access to edit on your behalf, ' +
-                                            'we\'ll automatically make the change, easy as that!</p></div>',
+                                            text: '<div class="osm-detail"><p>Religion information is stored in OpenStreetMap. ' +
+                                            'After clicking the button below, you\'ll be brought to a screen where you can login (or create an account) ' +
+                                            'and authorize Places of Worship to make edits on your behalf.</p>' +
+                                            '<p>Only changes that you explicitly initiate&mdash;updates to the religion of a particular ' +
+                                            'location&mdash;will be made, and you can revoke access at any time.</p>' +
+                                            '<p>By updating the data on OpenStreetMap, you\'ll be contributing not only to the visualization, ' +
+                                            'but also to the countless other services and tools powered by OpenStreetMap.</p>',
                                             showCancelButton: true,
-                                            confirmButtonText: 'Okay!',
-                                            cancelButtonText: 'Never mind, I don\'t want to'
+                                            type: 'info',
+                                            confirmButtonText: 'Show authorization screen',
+                                            cancelButtonText: 'Never mind'
                                         }, function ( okay ) {
                                             if ( okay ) {
                                                 authenticatedOsm.authenticate( function () {
@@ -516,7 +531,7 @@
 
             $( '.leaflet-control-layers-overlays' )
                 .tooltipster( {
-                    content: 'Click to toggle visibility until clicked again. Double-click to hide all other religions (double-click again to show all religions).',
+                    content: 'Click to change visibility until clicked again. Double-click to hide all other religions (double-click again to show all religions).',
                     position: 'left',
                     maxWidth: 300
                 } );
@@ -637,8 +652,9 @@
 
             // Remove controls for layers that no longer have any markers
             if ( layer._layers && Object.keys( layer._layers ).length === 0 ) {
-                control.removeLayer( layer );
                 map.removeLayer( layer );
+                control.removeLayer( layer );
+                addControl(); // Force update
             }
 
         } );
