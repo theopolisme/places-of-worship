@@ -1,17 +1,16 @@
 <head>
     <title>Places of Worship</title>
-    <link rel="stylesheet" href="ext/leaflet.css"/>
-    <link rel="stylesheet" href="main.css"/>
-    <link rel="stylesheet" href="ext/leaflet.photon.css"/>
-    <link rel="stylesheet" href="ext/sweet-alert.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.0.5/css/tooltipster.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.1.6/nprogress.min.css" />
+    <link rel="stylesheet" href="lib/leaflet.css"/>
+    <link rel="stylesheet" href="app.css"/>
+    <link rel="stylesheet" href="lib/leaflet.photon.css"/>
+    <link rel="stylesheet" href="lib/sweet-alert.css"/>
+    <link rel="stylesheet" href="lib/jquery.tooltipster.css"/>
+    <link rel="stylesheet" href="lib/nprogress.css" />
 </head>
 <body>
     <div id="intro">
         <h1>Places of Worship</h1>
         <p>Visualize the unique distribution of places of worship around the world by entering a location in the "Fly to" box in the upper righthand corner. Alternatively, <a id="geolocate" href="">geolocate</a> yourself.</p>
-        <!--<p class="small">See missing or incorrect data? You can update it through <a target="_blank" href="https://www.openstreetmap.org">OpenStreetMap</a>.</p>-->
     </div>
     <div class="footer">
         Places of Worship by <a target="_blank" href="https://theopatt.com">@theopolisme</a> | Rendered with <a target="_blank" href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © <a target="_blank" href="https://openstreetmap.org">OpenStreetMap</a> contributors &amp; served via the <a target="_blank" href="http://overpass-api.de/">Overpass API</a><span class="osm-login-detail"> | OSM logged in (<a id="osmLogout" href="#">logout</a>)</span>
@@ -21,12 +20,5 @@
         VERSION = 0.1;
         L_PREFER_CANVAS = true;
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.0.5/js/jquery.tooltipster.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.1.6/nprogress.min.js"></script>
-    <script src="ext/leaflet.js"></script>
-    <script src="ext/leaflet.photon.js"></script>
-    <script src="ext/sweet-alert.min.js"></script>
-    <script src="ext/osmauth.min.js"></script>
-    <script src="main.js"></script>
+    <script data-main="app" src="lib/require.js"></script>
 </body>
