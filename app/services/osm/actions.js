@@ -1,6 +1,5 @@
-define( [ './core', './changeset', '../../ui' ], function ( core, changeset, ui ) {
+define( [ './core', './changeset', '../../ui', '../../util' ], function ( core, changeset, ui, util ) {
     var OSM_LINK_FORMAT = 'https://www.openstreetmap.org/TYPE/ID',
-        OSM_API_CHANGESET_ENDPOINT = '/api/0.6/changeset/create',
         OSM_API_PLACE_ENDPOINT = '/api/0.6/TYPE/ID';
 
     function addReligionToPlace ( place, religion ) {
@@ -20,7 +19,7 @@ define( [ './core', './changeset', '../../ui' ], function ( core, changeset, ui 
                     return;
                 }
 
-                $doc = $( $.parseXML( serializeXml( raw ) ) );
+                $doc = $( $.parseXML( util.serializeXml( raw ) ) );
                 $node = $doc.find( 'node' );
 
                 if ( $node.find( 'tag[k="religion"]' ).length ) {
@@ -39,7 +38,7 @@ define( [ './core', './changeset', '../../ui' ], function ( core, changeset, ui 
                     method: 'PUT',
                     path: path,
                     options: { header: { 'Content-Type': 'text/xml' } },
-                    content: serializeXml( $doc.get( 0 ) )
+                    content: util.serializeXml( $doc.get( 0 ) )
                 }, function ( err, resp ) {
                     if ( err ) {
                         console.log( 'Error posting updated entry', err );
@@ -66,6 +65,7 @@ define( [ './core', './changeset', '../../ui' ], function ( core, changeset, ui 
                 cb.apply( null, arguments );
             } );
         },
+        logout: core.getInstance().logout,
         isAuthenticated: core.getInstance().authenticated,
         addReligionToPlace: addReligionToPlace,
         makeLinkToPlace: function ( place ) {

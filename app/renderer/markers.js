@@ -1,6 +1,10 @@
 define( [ 'leaflet', './core', './control', '../ui', '../util', '../services/osm/actions' ], function ( L, core, control, ui, util, osmActions ) {
     var DEFAULT_POPUP_CONTENT = '<span class="popup-loading">Loading details...</span>',
+        OSM_LINK_FORMAT = 'https://www.openstreetmap.org/TYPE/ID',
+
         lMap = core.getMap(),
+
+        religionSelectIndex = 0,
         oldUnknownsNowUpdated = [],
         groups = {};
 

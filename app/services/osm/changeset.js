@@ -1,5 +1,7 @@
 define( [ './core' ], function ( core ) {
-    var instance = core.getInstance(),
+    var OSM_API_CHANGESET_ENDPOINT = '/api/0.6/changeset/create',
+
+        instance = core.getInstance(),
         changesetId = null,
         changesetIdDate = window.localStorage && window.localStorage['changesetIdDate'] ?
             new Date( JSON.parse( window.localStorage['changesetIdDate'] ) ) : null;

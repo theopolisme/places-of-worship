@@ -29,7 +29,7 @@ define( [ 'jquery' ], function ( $ ) {
             var a,d,c,l,f;return function(){c=this;d=arguments;l=Date.now();var b=h&&!a;a||(a=setTimeout(k,e));b&&(f=g.apply(c,d),c=d=null);return f}
         },
         prettifyReligionName: function ( name ) {
-        return name.charAt( 0 ).toUpperCase() + name.substring( 1 ).replace( '_', ' ' );
+        return name.charAt( 0 ).toUpperCase() + name.substring( 1 ).replace( /_/g, ' ' );
         },
         serializeXml: function ( xmlElement ) {
             return ( new XMLSerializer() ).serializeToString( xmlElement );
