@@ -7,6 +7,7 @@ define( [ 'leaflet', 'leaflet.photon', 'events' ], function ( L, _, Events ) {
             worldCopyJump: true,
             photonControl: true,
             photonControlOptions: {
+                url: 'https://photon.komoot.de/api/?',
                 placeholder: 'Fly to...',
                 noResultLabel: 'No results found.',
                 includePosition: false,

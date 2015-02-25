@@ -1,11 +1,16 @@
 <head>
     <title>Places of Worship</title>
-    <link rel="stylesheet" href="lib/leaflet.css"/>
+    <!--(if target dev)><!-->
     <link rel="stylesheet" href="app.css"/>
+    <link rel="stylesheet" href="lib/leaflet.css"/>
     <link rel="stylesheet" href="lib/leaflet.photon.css"/>
     <link rel="stylesheet" href="lib/sweet-alert.css"/>
     <link rel="stylesheet" href="lib/jquery.tooltipster.css"/>
     <link rel="stylesheet" href="lib/nprogress.css" />
+    <!--<!(endif)-->
+    <!--(if target build)>
+    <link rel="stylesheet" href="app.min.css"/>
+    <!(endif)-->
 </head>
 <body>
     <div id="intro">
@@ -20,5 +25,11 @@
         VERSION = 0.1;
         L_PREFER_CANVAS = true;
     </script>
+    <!--(if target dev)><!-->
     <script data-main="app" src="lib/require.js"></script>
+    <!--<!(endif)-->
+    <!--(if target build)>
+    <script>IS_PRODUCTION = true;</script>
+    <script src="app.min.js"></script>
+    <!(endif)-->
 </body>

@@ -1,0 +1,23 @@
+{
+  "name": "places-of-worship",
+  "version": "0.1.0",
+  "description": "Visualize the unique distribution of places of worship around the globe",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theopolisme/places-of-worship.git"
+  },
+  "author": "Theo Patt <theo@theopatt.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theopolisme/places-of-worship/issues"
+  },
+  "homepage": "https://github.com/theopolisme/places-of-worship",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-gh-pages": "^0.10.0",
+    "grunt-htmlclean": "^2.5.1",
+    "grunt-targethtml": "^0.2.6"
+  }
+}
