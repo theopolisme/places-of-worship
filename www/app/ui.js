@@ -4,28 +4,44 @@ define( [ 'jquery', 'nprogress', 'sweet-alert', 'events', './map' ], function ( 
 
     function setupFlyMapOnHashChange () {
         $( window ).on( 'hashchange', function () {
+            var hashState;
+
             if ( justSetState ) {
                 justSetState = false;
-            } else if ( getStateLatLng() ) {
-                events.fire( 'shouldRender', getStateLatLng() );
-            } else {
-                console.log( 'Unrecognized hash...' );
+                return;
+            }
+
+            hashState = getHashState();
+            if ( hashState.latlng ) {
+                events.fire( 'shouldRender', hashState.latlng, hashState.zoom );
             }
         } );
         $( window ).trigger( 'hashchange' );
     }
 
-    function getStateLatLng () {
-        var latlng;
+    function getHashState () {
+        var hashItems, latlng, zoom;
 
         if ( window.location.hash && window.location.hash.indexOf( '#/vis/' ) === 0 ) {
-            latlng = window.location.hash.substring( 6 ).split( ',' );
-            if ( latlng.length !== 0 ) {
-                return latlng;
-            }
+            hashItems = window.location.hash.split( '/' );
+            latlng = hashItems[2].split( ',' );
+            zoom = +hashItems[3];
+            return {
+                latlng: latlng,
+                zoom: zoom
+            };
         }
 
-        return null;
+        return {
+            latlng: null,
+            zoom: null
+        };
+    }
+
+    function updateState ( latlng, zoom ) {
+        window.location.hash = '/vis/' + latlng.lat.toFixed( 3 ) + ',' + latlng.lng.toFixed( 3 ) + '/' + zoom;
+        $( '.photon-input' ).attr( 'placeholder', latlng.lat.toFixed( 3 ) + ', ' + latlng.lng.toFixed( 3 ) );
+        justSetState = true;
     }
 
     function showOsmLoggedIn () {
@@ -67,11 +83,6 @@ define( [ 'jquery', 'nprogress', 'sweet-alert', 'events', './map' ], function ( 
             $( document.body ).toggleClass( className, typeof toggle === 'undefined' ? true : toggle );
         },
         setupFlyMapOnHashChange: setupFlyMapOnHashChange,
-        getStateLatLng: getStateLatLng,
-        updateState: function ( latlng ) {
-            window.location.hash = '/vis/' + latlng.lat.toFixed( 3 ) + ',' + latlng.lng.toFixed( 3 );
-            $( '.photon-input' ).attr( 'placeholder', latlng.lat.toFixed( 3 ) + ', ' + latlng.lng.toFixed( 3 ) );
-            justSetState = true;
-        }
+        updateState: updateState
     }
 } );
