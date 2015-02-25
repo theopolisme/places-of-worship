@@ -1,6 +1,6 @@
 ( function ( $, L, NProgress ) {
     var map, lastLookup, lastWaitingRequest, lookupTimeout, control, states, mapping, mappingIndex,
-        changesetId, changesetIdDate,
+        changesetId, changesetIdDate, justSetState,
         oldUnknownsNowUpdated = [],
         religionSelectIndex = 0,
         groups = {},
@@ -34,6 +34,15 @@
             muslim: "Muslim",shinto: "Shinto",sikh: "Sikh",spiritualist: "Spiritualist",taoist: "Taoist",unitarian_universalist: "Unitarian universalist",
             voodoo: "Voodoo"}; // http://taginfo.openstreetmap.org/api/4/key/values?key=religion&filter=all&lang=en&sortname=count&sortorder=desc
 
+
+    // https://github.com/kartenkarsten/leaflet-layer-overpass/blob/master/OverPassLayer.js
+    // South-West-North-East
+    L.LatLngBounds.prototype.toOverpassBBoxString = function (){
+      var a = this._southWest,
+        b = this._northEast;
+      return [ a.lat, a.lng, b.lat, b.lng ].join( ',' );
+    }
+
     // Taken from http://underscorejs.org/docs/underscore.html -- debounce(func, timeout, immediate)
     function debounce(g,e,h){function k(){var b=Date.now()-l;b<e&&0<=b?a=setTimeout(k,e-b):(a=null,h||(f=g.apply(c,d),a||(c=d=null)))}
         var a,d,c,l,f;return function(){c=this;d=arguments;l=Date.now();var b=h&&!a;a||(a=setTimeout(k,e));b&&(f=g.apply(c,d),c=d=null);return f}
@@ -46,7 +55,6 @@
     function serializeXml ( xmlElement ) {
         return ( new XMLSerializer() ).serializeToString( xmlElement );
     }
-
 
     function showAndSetupOsmLoginDetail () {
         $( '.osm-login-detail' ).show();
@@ -180,6 +188,28 @@
         return mapping[name];
     }
 
+    justSetState = false;
+    function updateStateBasedOnLatLng ( latlng ) {
+        window.location.hash = '/vis/' + latlng.lat.toFixed( 3 ) + ',' + latlng.lng.toFixed( 3 );
+        $( '.photon-input' ).attr( 'placeholder', latlng.lat.toFixed( 3 ) + ', ' + latlng.lng.toFixed( 3 ) );
+        justSetState = true;
+    }
+
+    function getLatLngFromHash () {
+        return window.location.hash.substring( 6 ).split( ',' );
+    }
+
+    $( window ).on( 'hashchange', function () {
+        if ( justSetState ) {
+            justSetState = false;
+        } else if ( window.location.hash.indexOf( '#/vis/' ) === 0 ) {
+            map.flyTo( getLatLngFromHash() );
+        } else {
+            window.location.hash = '';
+            window.location.reload();
+        }
+    } );
+
     function init () {
         var position, marker, autocomplete, initialHeight, isGrowing,
             $autocomplete = $( '#autocomplete' );
@@ -201,49 +231,57 @@
             minZoom: 2
         } ).addTo( map );
 
-        if ( window.location.hash ) {
-            position = window.location.hash.substring( 1 ).split( ',' );
-        } else {
-            position = DEFAULT_MARKER_POSITION;
-        }
-
-        marker = L.marker( position, {
-            draggable: true,
+        marker = L.marker( DEFAULT_MARKER_POSITION, {
+            opacity: 0,
+            draggable: false,
+            clickable: false
         } ).addTo( map );
 
-        function updatePosition () {
-            var ll = marker.getLatLng();
-            $( '.photon-input' ).attr( 'placeholder', ll.lat.toFixed( 3 ) + ', ' + ll.lng.toFixed( 3 ) )
-            window.location.hash = ll.lat.toFixed( 3 ) + ',' + ll.lng.toFixed( 3 );
-        }
-        marker.on( 'move', updatePosition );
-
         function autocompleteSelected ( feature ) {
-            $( '.photon-input' ).blur();
             marker.setLatLng( [feature.geometry.coordinates[1], feature.geometry.coordinates[0] ] );
             go();
         }
 
-        $( '.photon-input' ).focus();
-
-        $( '.photon-input' ).on( 'keyup blur change', function () {
-            $( this ).toggleClass( 'has-content', !!$( this ).val().length );
-        } );
+        $( '.photon-input' )
+            .focus()
+            .on( 'keyup blur change', function () {
+                $( this ).toggleClass( 'has-content', !!$( this ).val().length );
+            } );
 
         if ( authenticatedOsm.authenticated() ) {
             showAndSetupOsmLoginDetail();
         }
 
+        $( '#geolocate' ).one( 'click', function () {
+            NProgress.start();
+            map.locate();
+            return false;
+        } );
+
+        map.on( 'locationfound', function ( e ) {
+            marker.setLatLng( e.latlng );
+            go();
+        } );
+
+
+        if ( window.location.hash && window.location.hash.indexOf( '#/vis/' ) === 0 ) {
+            marker.setLatLng( getLatLngFromHash() );
+            go();
+        }
+
         marker.on( 'click', go );
         marker.once( 'drag', function () { 
             $( '#go' ).css( 'font-weight', 'bold' );
-            $( '.photon-input' ).blur();
         } );
-
-        $( '#go' ).click( go );
+        marker.on( 'drag', function () {
+            updateStateBasedOnLatLng( marker.getLatLng() );
+        } );
 
         function go () {
             var latlng = marker.getLatLng();
+
+            $( '.photon-input' ).blur();
+            NProgress.start();
 
             $( document.body ).addClass( 'map-active' );
             render( latlng );
@@ -254,6 +292,7 @@
                     opacity: 0
                 } );
 
+            updateStateBasedOnLatLng( latlng );
             map.flyTo( latlng, 12 );
 
             setTimeout( function () {
@@ -273,9 +312,7 @@
 
             // Update url to be centered
             map.on( 'move drag', debounce( function () {
-                var ll = map.getCenter();
-                $( '.photon-input' ).attr( 'placeholder', ll.lat.toFixed( 3 ) + ', ' + ll.lng.toFixed( 3 ) )
-                window.location.hash = ll.lat.toFixed( 3 ) + ',' + ll.lng.toFixed( 3 );
+                updateStateBasedOnLatLng( map.getCenter() );
             }, 100 ) );
 
             // Also, now add the listener to dynamically add MORE points later on! Such fun very excite.
@@ -287,14 +324,6 @@
             }, 50, /* immediate */ true ) );
 
         } );
-    }
-
-    // https://github.com/kartenkarsten/leaflet-layer-overpass/blob/master/OverPassLayer.js
-    // South-West-North-East
-    L.LatLngBounds.prototype.toOverpassBBoxString = function (){
-      var a = this._southWest,
-        b = this._northEast;
-      return [ a.lat, a.lng, b.lat, b.lng ].join( ',' );
     }
 
     lastLookup = 0;
