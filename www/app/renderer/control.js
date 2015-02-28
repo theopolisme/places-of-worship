@@ -23,7 +23,8 @@ define( [ 'leaflet', 'jquery', 'jquery.tooltipster', './core', '../util' ], func
                 .tooltipster( {
                     content: 'Click to change visibility until clicked again. Double-click to hide all other religions (double-click again to show all religions).',
                     position: 'left',
-                    maxWidth: 300
+                    maxWidth: 300,
+                    touchDevices: false
                 } );
         } else {
             $.each( groups, function ( name, g ) {
