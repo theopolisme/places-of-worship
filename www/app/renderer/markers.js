@@ -112,11 +112,6 @@ define( [ 'leaflet', './core', './control', '../ui', '../util', '../services/osm
                 groups[name] = { color: color, places: newPlaces, group: L.featureGroup( markers ).addTo( lMap ) }; 
             }
         } );
-
-        console.log( '----\nmarkers added' );
-        $.each( groups, function ( k, v ) {
-            console.log(k + ': ' + ( v.group._layers ? Object.keys( v.group._layers ).length : 0));
-        } );
     }
 
     return {

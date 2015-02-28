@@ -18,6 +18,9 @@ define( [ 'leaflet', 'leaflet.photon', 'events' ], function ( L, _, Events ) {
             }
         } ).setView( [0, 0], 2 );
 
+        // We use double-click to fly to points instead
+        map.doubleClickZoom.disable();
+
         L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 16,
             minZoom: 2

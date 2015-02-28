@@ -18,6 +18,10 @@ define( [ 'jquery', './renderer/main', './map', './ui', './services/analytics' ]
             analytics.send( 'locationSelected', feature.properties.name );
             renderer.renderAtLatLng( [ feature.geometry.coordinates[1], feature.geometry.coordinates[0] ] );
         } );
+
+        map.getMap().on( 'dblclick', function ( e ) {
+            renderer.renderAtLatLng( e.latlng );
+        } );
     }
 
     return {
