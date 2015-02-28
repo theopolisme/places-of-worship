@@ -37,7 +37,7 @@ define( [ 'leaflet', './core', './markers', './control' ], function ( L, core, m
     return {
         purge: purge,
         startAutoPurge: function () {
-            setTimeout( purge, MS_BETWEEN_PURGES );
+            setInterval( purge, MS_BETWEEN_PURGES );
         }
     };
 } );
