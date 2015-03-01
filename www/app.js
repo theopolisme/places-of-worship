@@ -9,9 +9,6 @@ requirejs.config( {
         },
         'leaflet.photon': {
             deps: [ 'leaflet' ]
-        },
-        'jquery.tooltipster': {
-            deps: [ 'jquery' ]
         }
     }
 } );
