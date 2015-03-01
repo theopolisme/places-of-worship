@@ -8,6 +8,7 @@ define( [ 'jquery', './renderer/main', './map', './ui', './services/analytics' ]
             ui.progress.start();
             map.geolocate( function ( err, latlng ) {
                 if ( !err ) {
+                    analytics.send( 'geolocateSelected', latlng.toString() );
                     renderer.renderAtLatLng( latlng );
                 }
             } );
@@ -20,6 +21,7 @@ define( [ 'jquery', './renderer/main', './map', './ui', './services/analytics' ]
         } );
 
         map.getMap().on( 'dblclick', function ( e ) {
+            analytics.send( 'latLngSelected', e.latlng.toString() );
             renderer.renderAtLatLng( e.latlng );
         } );
     }
