@@ -3,7 +3,7 @@ define( [ 'jquery', 'nprogress', 'sweet-alert', 'events', './map' ], function ( 
         events = Events();    
 
     function setupFlyMapOnHashChange () {
-        $( window ).on( 'hashchange', function () {
+        $( window ).on( 'hashchange', function ( _, isInitial ) {
             var hashState;
 
             if ( justSetState ) {
@@ -14,9 +14,11 @@ define( [ 'jquery', 'nprogress', 'sweet-alert', 'events', './map' ], function ( 
             hashState = getHashState();
             if ( hashState.latlng ) {
                 events.fire( 'shouldRender', hashState.latlng, hashState.zoom );
+            } else if ( !isInitial && hashState.isEmpty ) {
+                window.location.reload();
             }
         } );
-        $( window ).trigger( 'hashchange' );
+        $( window ).trigger( 'hashchange', [ true ] );
     }
 
     function getHashState () {
@@ -33,6 +35,7 @@ define( [ 'jquery', 'nprogress', 'sweet-alert', 'events', './map' ], function ( 
         }
 
         return {
+            isEmpty: !window.location.hash || window.location.hash === '#',
             latlng: null,
             zoom: null
         };

@@ -32,7 +32,7 @@ define( [ 'leaflet', './core', './control', '../ui', '../util', '../services/osm
                         if ( isUnknown ) {
                             selectorId = 'religionSelect' + religionSelectIndex++;
                             content += '<div class="no-data">' +
-                                'We don\'t have data about what religion is associated with this place of worship. Do you know?' +
+                                'We don\'t have data about which religion is associated with this place of worship. Do you know?' +
                                 '<div class="options">' +
                                     util.generateReligionSelect( selectorId ) +
                                     '<button id="submit' + selectorId + '">Submit</button>' +

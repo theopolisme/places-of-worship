@@ -162,12 +162,13 @@ span.group {
     user-select: none;
 }
 
-input.leaflet-control-layers-selector ~ span > span.temp-disabled {
-    opacity: 0.7;
-}
 
 input.leaflet-control-layers-selector:checked ~ span > span {
     opacity: 1;
+}
+
+input.leaflet-control-layers-selector:checked ~ span >span:hover {
+    opacity: 0.8;
 }
 
 .leaflet-popup-content .name {

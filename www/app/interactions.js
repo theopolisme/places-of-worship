@@ -24,6 +24,14 @@ define( [ 'jquery', './renderer/main', './map', './ui', './services/analytics' ]
             analytics.send( 'latLngSelected', e.latlng.toString() );
             renderer.renderAtLatLng( e.latlng );
         } );
+
+        // Progress indicator for fly-to autocompletion lookup
+        map.addHandler( 'autocompleteLookupStart', function () {
+            ui.progress.start();
+        } );
+        map.addHandler( 'autocompleteLookupEnd', function () {
+            ui.progress.done();
+        } );
     }
 
     return {
